@@ -1,133 +1,116 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LIS Student Finance System</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIS Pro System</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div id="loginPage" class="login-page">
+  <div class="login-card">
+    <img src="assets/logo.png" alt="LIS Logo">
+    <h3 data-ar="نظام التسجيل والعقود المالية" data-en="Admission & Financial Contracts">نظام التسجيل والعقود المالية</h3>
+    <p>Leadership International Schools</p>
+    <input id="email" class="form-control" value="admin@lis.school">
+    <input id="password" type="password" class="form-control mt-2" value="123456">
+    <button onclick="login()" class="btn-main w-100 mt-3" data-ar="دخول النظام" data-en="Login">دخول النظام</button>
+    <button onclick="toggleLang()" class="btn btn-outline-secondary w-100 mt-2" id="loginLang">English</button>
+  </div>
+</div>
+
+<div id="app" class="app d-none">
   <aside class="sidebar">
     <div class="brand">
-      <img src="logo.png" onerror="this.src='https://dummyimage.com/170x90/ffffff/06233f.png&text=LIS'" alt="LIS Logo">
-      <h2 data-ar="مدارس القيادة العالمية" data-en="Leadership International Schools">مدارس القيادة العالمية</h2>
-      <p data-ar="نظام التسجيل والعقود المالية" data-en="Admission & Finance System">نظام التسجيل والعقود المالية</p>
+      <img src="assets/logo.png" alt="Logo">
+      <h4 data-ar="مدارس القيادة العالمية" data-en="Leadership International Schools">مدارس القيادة العالمية</h4>
+      <span data-ar="نظام التسجيل والمالية" data-en="Admission & Finance System">نظام التسجيل والمالية</span>
     </div>
-    <nav>
-      <a href="#dashboard" class="nav-link active" onclick="showPage('dashboard', this)"><i class="bi bi-grid"></i><span data-ar="الرئيسية" data-en="Dashboard">الرئيسية</span></a>
-      <a href="#add" class="nav-link" onclick="showPage('add', this)"><i class="bi bi-person-plus"></i><span data-ar="إضافة طالب" data-en="Add Student">إضافة طالب</span></a>
-      <a href="#students" class="nav-link" onclick="showPage('students', this)"><i class="bi bi-person-vcard"></i><span data-ar="تفاصيل الطلاب" data-en="Student Details">تفاصيل الطلاب</span></a>
-      <a href="#installments" class="nav-link" onclick="showPage('installments', this)"><i class="bi bi-calendar-check"></i><span data-ar="الأقساط" data-en="Installments">الأقساط</span></a>
-      <a href="#reports" class="nav-link" onclick="showPage('reports', this)"><i class="bi bi-bar-chart"></i><span data-ar="التقارير" data-en="Reports">التقارير</span></a>
-    </nav>
+    <a class="nav active" href="#dashboard" onclick="showSection('dashboard',this)"><i class="bi bi-grid"></i><span data-ar="الرئيسية" data-en="Dashboard">الرئيسية</span></a>
+    <a class="nav" href="#student" onclick="showSection('student',this)"><i class="bi bi-person-plus"></i><span data-ar="إضافة طالب" data-en="Add Student">إضافة طالب</span></a>
+    <a class="nav" href="#details" onclick="showSection('details',this);loadStudents()"><i class="bi bi-person-vcard"></i><span data-ar="تفاصيل الطالب" data-en="Student Details">تفاصيل الطالب</span></a>
+    <a class="nav" href="#installments" onclick="showSection('installments',this);loadInstallments()"><i class="bi bi-calendar2-check"></i><span data-ar="الأقساط" data-en="Installments">الأقساط</span></a>
+    <a class="nav" href="#reports" onclick="showSection('reports',this);loadReports()"><i class="bi bi-bar-chart"></i><span data-ar="التقارير" data-en="Reports">التقارير</span></a>
+    <button onclick="logout()" class="logout"><i class="bi bi-box-arrow-right"></i><span data-ar="خروج" data-en="Logout">خروج</span></button>
   </aside>
 
-  <main class="content">
-    <header class="top-card">
-      <div>
-        <h1 data-ar="ملف الطالب والعقود المالية" data-en="Student Profile & Financial Contracts">ملف الطالب والعقود المالية</h1>
-        <p data-ar="تسجيل الطلاب، إنشاء العقود، الأقساط، والتقارير" data-en="Student admission, contracts, installments and reports">تسجيل الطلاب، إنشاء العقود، الأقساط، والتقارير</p>
-      </div>
-      <div class="header-actions">
-        <button class="btn-dark-blue" onclick="toggleLang()" id="langBtn">English</button>
-        <button class="btn-maroon" onclick="printArea('currentPage')"><i class="bi bi-printer"></i> <span data-ar="طباعة" data-en="Print">طباعة</span></button>
-      </div>
+  <main>
+    <header class="top">
+      <div><h2>Student Profile & Financial Contracts</h2><p data-ar="إدارة بيانات الطلاب والعقود والأقساط والتقارير" data-en="Student admission, contracts, installments and reports">إدارة بيانات الطلاب والعقود والأقساط والتقارير</p></div>
+      <div class="top-actions"><button onclick="toggleLang()" class="btn-lang" id="langBtn">English</button><button onclick="printCurrent()" class="btn-print"><i class="bi bi-printer"></i> <span data-ar="طباعة" data-en="Print">طباعة</span></button></div>
     </header>
 
-    <div id="currentPage">
-      <section id="dashboard" class="page active-page">
-        <div class="stats-grid">
-          <div class="stat-card"><div><span data-ar="الطلاب" data-en="Students">الطلاب</span><h3 id="studentsCount">0</h3></div><i class="bi bi-people navy"></i></div>
-          <div class="stat-card"><div><span data-ar="إجمالي العقود" data-en="Contracts Total">إجمالي العقود</span><h3 id="contractsTotal">0</h3></div><i class="bi bi-file-text maroon"></i></div>
-          <div class="stat-card"><div><span data-ar="المحصل" data-en="Collected">المحصل</span><h3 id="collectedTotal">0</h3></div><i class="bi bi-wallet2 green"></i></div>
-          <div class="stat-card"><div><span data-ar="نسبة التحصيل" data-en="Collection Rate">نسبة التحصيل</span><h3 id="collectionRate">0%</h3></div><i class="bi bi-pie-chart orange"></i></div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><h2 data-ar="آخر الطلاب المسجلين" data-en="Recent Students">آخر الطلاب المسجلين</h2><button class="btn-print-small" onclick="printArea('dashboard')"><i class="bi bi-printer"></i></button></div>
-          <div class="table-responsive"><table class="table align-middle"><thead><tr><th data-ar="الاسم" data-en="Name">الاسم</th><th data-ar="الهوية" data-en="ID">الهوية</th><th data-ar="الصف" data-en="Grade">الصف</th><th data-ar="الفصل" data-en="Class">الفصل</th><th data-ar="إجمالي العقد" data-en="Contract Total">إجمالي العقد</th></tr></thead><tbody id="recentStudentsTable"></tbody></table></div>
-        </div>
-      </section>
+    <section id="dashboard" class="page active">
+      <div class="grid4">
+        <div class="stat"><div class="stat-content"><span data-ar="الطلاب" data-en="Students">الطلاب</span><h3 id="stStudents">0</h3></div><i class="bi bi-people"></i></div>
+        <div class="stat"><div class="stat-content"><span data-ar="العقود" data-en="Contracts">العقود</span><h3 id="stContracts">0</h3></div><i class="bi bi-file-text"></i></div>
+        <div class="stat"><div class="stat-content"><span data-ar="المحصل" data-en="Collected">المحصل</span><h3 id="stPaid">0</h3></div><i class="bi bi-wallet2"></i></div>
+        <div class="stat"><div class="stat-content"><span data-ar="نسبة التحصيل" data-en="Collection Rate">نسبة التحصيل</span><h3 id="stRate">0%</h3></div><i class="bi bi-pie-chart"></i></div>
+      </div>
+      <div class="cardx"><h4 data-ar="آخر الطلاب المسجلين" data-en="Recent Students">آخر الطلاب المسجلين</h4><div id="recentStudents"></div></div>
+    </section>
 
-      <section id="add" class="page">
-        <form class="panel form-panel" onsubmit="event.preventDefault(); saveStudent();">
-          <div class="panel-head"><h2 data-ar="إضافة طالب وإنشاء العقد المالي" data-en="Add Student & Create Financial Contract">إضافة طالب وإنشاء العقد المالي</h2></div>
-          <h4 data-ar="بيانات الطالب" data-en="Student Data">بيانات الطالب</h4>
-          <div class="form-grid">
-            <input name="name_ar" class="form-control" placeholder="اسم الطالب عربي" required>
-            <input name="name_en" class="form-control" placeholder="Student Name English">
-            <input name="national_id" class="form-control" placeholder="رقم الهوية / الإقامة">
-            <select name="gender" class="form-select"><option value="Male">ذكر / Male</option><option value="Female">أنثى / Female</option></select>
-            <input name="stage" class="form-control" placeholder="المرحلة">
-            <input name="grade" class="form-control" placeholder="الصف">
-            <input name="class_name" class="form-control" placeholder="الفصل">
-            <input name="admission_date" type="date" class="form-control">
-            <input name="guardian_name" class="form-control" placeholder="اسم ولي الأمر">
-            <input name="guardian_mobile" class="form-control" placeholder="جوال ولي الأمر">
-            <input name="email" type="email" class="form-control" placeholder="البريد الإلكتروني">
-            <input name="address" class="form-control" placeholder="العنوان">
+    <section id="student" class="page">
+      <div class="cardx">
+        <h4><i class="bi bi-person-plus"></i> <span data-ar="بيانات الطالب للالتحاق" data-en="Student Admission Data">بيانات الطالب للالتحاق</span></h4>
+        <div class="form-grid">
+          <input id="name_ar" placeholder="اسم الطالب عربي"><input id="name_en" placeholder="Student Name English"><input id="national_id" placeholder="رقم الهوية">
+          <select id="gender"><option>ذكر</option><option>أنثى</option></select><select id="stage"><option>Primary</option><option>Middle</option><option>High</option><option>KG</option></select>
+          <input id="grade" placeholder="Grade 9"><input id="class_name" placeholder="Class A"><input id="guardian_name" placeholder="اسم ولي الأمر"><input id="guardian_mobile" placeholder="جوال ولي الأمر"><input id="student_email" placeholder="Email"><input id="address" placeholder="العنوان"><input id="admission_date" type="date">
+        </div>
+        <hr>
+        <div class="section-head">
+          <h4><i class="bi bi-file-earmark-text"></i> <span data-ar="العقد المالي" data-en="Financial Contract">العقد المالي</span></h4>
+          <div>
+            <span class="calc-chip"><i class="bi bi-calculator"></i><span data-ar="حساب تلقائي" data-en="Auto Calculation">حساب تلقائي</span></span>
+            <span class="calc-chip"><i class="bi bi-calendar-check"></i><span data-ar="إنشاء أقساط" data-en="Generate Installments">إنشاء أقساط</span></span>
           </div>
-          <h4 class="mt-4" data-ar="تفاصيل العقد المالي" data-en="Financial Contract Details">تفاصيل العقد المالي</h4>
-          <div class="form-grid">
-            <input name="academic_year" class="form-control" value="2026/2027" placeholder="العام الدراسي">
-            <input name="tuition" type="number" class="form-control calc" value="20000" placeholder="الرسوم الدراسية">
-            <input name="registration_fee" type="number" class="form-control calc" value="1000" placeholder="رسوم التسجيل">
-            <input name="discount" type="number" class="form-control calc" value="2000" placeholder="الخصم">
-            <input name="vat_percent" type="number" class="form-control calc" value="15" placeholder="الضريبة %">
-            <input name="installments_count" type="number" class="form-control calc" value="4" placeholder="عدد الأقساط">
-            <input name="first_due_date" type="date" class="form-control" placeholder="تاريخ أول قسط">
+        </div>
+        <div class="contract-layout">
+          <div>
+            <div class="form-grid">
+              <div class="field"><label data-ar="العام الدراسي" data-en="Academic Year">العام الدراسي</label><input id="academic_year" value="2026/2027" placeholder="2026/2027"></div>
+              <div class="field"><label data-ar="الرسوم الدراسية" data-en="Tuition Fees">الرسوم الدراسية</label><input id="tuition" type="number" value="20000" placeholder="Tuition"></div>
+              <div class="field"><label data-ar="رسوم التسجيل" data-en="Registration Fee">رسوم التسجيل</label><input id="registration_fee" type="number" value="1000" placeholder="Registration Fee"></div>
+              <div class="field"><label data-ar="الخصم" data-en="Discount">الخصم</label><input id="discount" type="number" value="2000" placeholder="Discount"></div>
+              <div class="field"><label data-ar="نسبة الضريبة %" data-en="VAT %">نسبة الضريبة %</label><input id="vat_percent" type="number" value="15" placeholder="VAT"></div>
+              <div class="field"><label data-ar="عدد الأقساط" data-en="Installments Count">عدد الأقساط</label><input id="inst_count" type="number" value="4" placeholder="Installments Count"></div>
+              <div class="field"><label data-ar="تاريخ أول قسط" data-en="First Due Date">تاريخ أول قسط</label><input id="start_date" type="date"></div>
+            </div>
+            <div class="help-note" data-ar="ملاحظة: النظام يحسب الإجمالي = الرسوم + التسجيل - الخصم + الضريبة، ثم يقسم الإجمالي على عدد الأقساط المختار." data-en="Note: The system calculates Total = Tuition + Registration - Discount + VAT, then divides it by the selected number of installments.">ملاحظة: النظام يحسب الإجمالي = الرسوم + التسجيل - الخصم + الضريبة، ثم يقسم الإجمالي على عدد الأقساط المختار.</div>
+            <div class="finance-actions">
+              <button onclick="updateContractPreview()" class="btn btn-outline-primary fw-bold"><i class="bi bi-calculator"></i> <span data-ar="معاينة الحساب" data-en="Preview Calculation">معاينة الحساب</span></button>
+              <button onclick="createFullStudent()" class="btn-main"><i class="bi bi-save"></i> <span data-ar="حفظ الطالب وإنشاء العقد والأقساط" data-en="Save Student, Contract & Installments">حفظ الطالب وإنشاء العقد والأقساط</span></button>
+            </div>
           </div>
-          <div class="contract-preview">
-            <div><span data-ar="قبل الضريبة" data-en="Subtotal">قبل الضريبة</span><strong id="previewSubtotal">0</strong></div>
-            <div><span data-ar="الضريبة" data-en="VAT">الضريبة</span><strong id="previewVat">0</strong></div>
-            <div><span data-ar="إجمالي العقد" data-en="Contract Total">إجمالي العقد</span><strong id="previewTotal">0</strong></div>
-            <div><span data-ar="قيمة القسط" data-en="Installment Value">قيمة القسط</span><strong id="previewInstallment">0</strong></div>
-          </div>
-          <button class="btn-save" type="submit"><i class="bi bi-save"></i> <span data-ar="حفظ الطالب وإنشاء العقد والأقساط" data-en="Save Student, Contract & Installments">حفظ الطالب وإنشاء العقد والأقساط</span></button>
-        </form>
-      </section>
-
-      <section id="students" class="page">
-        <div class="panel">
-          <div class="panel-head"><h2 data-ar="تفاصيل الطلاب المسجلين" data-en="Registered Student Details">تفاصيل الطلاب المسجلين</h2><button class="btn-print-small" onclick="printArea('students')"><i class="bi bi-printer"></i> <span data-ar="طباعة تفاصيل الطلاب" data-en="Print Student Details">طباعة تفاصيل الطلاب</span></button></div>
-          <div class="table-responsive"><table class="table"><thead><tr><th data-ar="الاسم" data-en="Name">الاسم</th><th data-ar="الهوية" data-en="ID">الهوية</th><th data-ar="المرحلة" data-en="Stage">المرحلة</th><th data-ar="الصف" data-en="Grade">الصف</th><th data-ar="ولي الأمر" data-en="Guardian">ولي الأمر</th><th data-ar="الجوال" data-en="Mobile">الجوال</th><th data-ar="العقد" data-en="Contract">العقد</th></tr></thead><tbody id="studentsRows"></tbody></table></div>
+          <aside class="contract-preview" id="contractPreviewBox">
+            <h5><i class="bi bi-receipt"></i> <span data-ar="تفاصيل العقد المالي" data-en="Contract Details">تفاصيل العقد المالي</span></h5>
+            <div class="mini"><span data-ar="الرسوم الدراسية" data-en="Tuition">الرسوم الدراسية</span><strong id="pvTuition">20,000 SAR</strong></div>
+            <div class="mini"><span data-ar="رسوم التسجيل" data-en="Registration">رسوم التسجيل</span><strong id="pvReg">1,000 SAR</strong></div>
+            <div class="mini"><span data-ar="الخصم" data-en="Discount">الخصم</span><strong id="pvDiscount">2,000 SAR</strong></div>
+            <div class="mini"><span data-ar="قبل الضريبة" data-en="Before VAT">قبل الضريبة</span><strong id="pvBeforeVat">19,000 SAR</strong></div>
+            <div class="mini"><span data-ar="قيمة الضريبة" data-en="VAT Amount">قيمة الضريبة</span><strong id="pvVat">2,850 SAR</strong></div>
+            <div class="contract-total"><span data-ar="إجمالي العقد" data-en="Contract Total">إجمالي العقد</span><h3 id="pvTotal">21,850 SAR</h3></div>
+            <div class="mini"><span data-ar="قيمة القسط الواحد" data-en="Single Installment">قيمة القسط الواحد</span><strong id="pvInstallment">5,462.50 SAR</strong></div>
+          </aside>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="installments" class="page">
-        <div class="panel">
-          <div class="panel-head"><h2 data-ar="جدول الأقساط ومواعيد الاستحقاق" data-en="Installment Schedule & Due Dates">جدول الأقساط ومواعيد الاستحقاق</h2><button class="btn-print-small" onclick="printArea('installments')"><i class="bi bi-printer"></i> <span data-ar="طباعة جدول الأقساط" data-en="Print Installments">طباعة جدول الأقساط</span></button></div>
-          <div class="table-responsive"><table class="table"><thead><tr><th>#</th><th data-ar="الطالب" data-en="Student">الطالب</th><th data-ar="رقم القسط" data-en="Installment No.">رقم القسط</th><th data-ar="تاريخ الاستحقاق" data-en="Due Date">تاريخ الاستحقاق</th><th data-ar="المبلغ" data-en="Amount">المبلغ</th><th data-ar="الحالة" data-en="Status">الحالة</th><th data-ar="إجراء" data-en="Action">إجراء</th></tr></thead><tbody id="installmentsRows"></tbody></table></div>
-        </div>
-      </section>
+    <section id="details" class="page">
+      <div class="cardx printable" id="printDetails"><div class="section-head"><h4 data-ar="تفاصيل الطلاب المسجلين" data-en="Registered Student Details">تفاصيل الطلاب المسجلين</h4><button class="btn-print-small" onclick="printArea('printDetails')"><i class="bi bi-printer"></i> <span data-ar="طباعة تفاصيل الطلاب" data-en="Print Student Details">طباعة تفاصيل الطلاب</span></button></div><div class="table-responsive"><table class="table table-hover"><thead><tr><th>#</th><th data-ar="الاسم" data-en="Name">الاسم</th><th data-ar="الهوية" data-en="ID">الهوية</th><th data-ar="المرحلة" data-en="Stage">المرحلة</th><th data-ar="الصف" data-en="Grade">الصف</th><th data-ar="ولي الأمر" data-en="Guardian">ولي الأمر</th><th data-ar="العقد" data-en="Contract">العقد</th><th data-ar="إجمالي العقد" data-en="Total">إجمالي العقد</th></tr></thead><tbody id="studentsTable"></tbody></table></div></div>
+    </section>
 
-      <section id="reports" class="page">
-        <div class="panel">
-          <div class="panel-head"><h2 data-ar="التقارير المالية" data-en="Financial Reports">التقارير المالية</h2><div><button class="btn-print-small" onclick="printArea('reports')"><i class="bi bi-printer"></i> <span data-ar="طباعة التقرير المالي" data-en="Print Financial Report">طباعة التقرير المالي</span></button><button class="btn-print-small" onclick="printUnpaidOnly()"><i class="bi bi-printer"></i> <span data-ar="طباعة غير المدفوعة فقط" data-en="Print Due Only">طباعة غير المدفوعة فقط</span></button></div></div>
-          <div class="reports-grid"><div class="report-box"><span data-ar="إجمالي الطلاب" data-en="Total Students">إجمالي الطلاب</span><h3 id="rpStudents">0</h3></div><div class="report-box"><span data-ar="إجمالي العقود" data-en="Total Contracts">إجمالي العقود</span><h3 id="rpContracts">0</h3></div><div class="report-box"><span data-ar="المحصل" data-en="Collected">المحصل</span><h3 id="rpCollected">0</h3></div><div class="report-box"><span data-ar="المتبقي" data-en="Remaining">المتبقي</span><h3 id="rpRemaining">0</h3></div></div>
-          <h4 class="mt-4" data-ar="الأقساط غير المدفوعة" data-en="Unpaid Installments">الأقساط غير المدفوعة</h4>
-          <div class="table-responsive"><table class="table"><thead><tr><th data-ar="الطالب" data-en="Student">الطالب</th><th data-ar="تاريخ الاستحقاق" data-en="Due Date">تاريخ الاستحقاق</th><th data-ar="المبلغ" data-en="Amount">المبلغ</th><th data-ar="الحالة" data-en="Status">الحالة</th></tr></thead><tbody id="dueRows"></tbody></table></div>
-        </div>
-      </section>
-    </div>
+    <section id="installments" class="page">
+      <div class="cardx printable" id="printInstallments"><div class="section-head"><h4 data-ar="جدول الأقساط ومواعيد الاستحقاق" data-en="Installment Schedule & Due Dates">جدول الأقساط ومواعيد الاستحقاق</h4><button class="btn-print-small" onclick="printArea('printInstallments')"><i class="bi bi-printer"></i> <span data-ar="طباعة جدول الأقساط" data-en="Print Installments">طباعة جدول الأقساط</span></button></div><div class="table-responsive"><table class="table table-bordered"><thead><tr><th>#</th><th data-ar="الطالب" data-en="Student">الطالب</th><th data-ar="العقد" data-en="Contract">العقد</th><th data-ar="الاستحقاق" data-en="Due Date">الاستحقاق</th><th data-ar="المبلغ" data-en="Amount">المبلغ</th><th data-ar="المدفوع" data-en="Paid">المدفوع</th><th data-ar="الحالة" data-en="Status">الحالة</th><th data-ar="إجراء" data-en="Action">إجراء</th></tr></thead><tbody id="installmentsTable"></tbody></table></div></div>
+    </section>
+
+    <section id="reports" class="page">
+      <div class="grid3"><div class="report-card"><span data-ar="إجمالي الطلاب" data-en="Total Students">إجمالي الطلاب</span><h3 id="rpStudents">0</h3></div><div class="report-card"><span data-ar="إجمالي العقود" data-en="Total Contracts">إجمالي العقود</span><h3 id="rpContracts">0</h3></div><div class="report-card"><span data-ar="المتبقي" data-en="Remaining">المتبقي</span><h3 id="rpRemaining">0</h3></div></div>
+      <div class="cardx printable" id="printReports"><div class="section-head"><h4 data-ar="التقارير المالية" data-en="Financial Reports">التقارير المالية</h4><div><button class="btn-print-small" onclick="printArea('printReports')"><i class="bi bi-printer"></i> <span data-ar="طباعة تقرير مالي" data-en="Print Financial Report">طباعة تقرير مالي</span></button><button class="btn-print-small" onclick="printArea('dueReport')"><i class="bi bi-printer"></i> <span data-ar="طباعة المستحقات فقط" data-en="Print Due Only">طباعة المستحقات فقط</span></button></div></div><div id="collectionsReport"></div><div id="dueReport"><h5 data-ar="الأقساط غير المدفوعة" data-en="Unpaid Installments">الأقساط غير المدفوعة</h5><div class="table-responsive"><table class="table"><thead><tr><th data-ar="الطالب" data-en="Student">الطالب</th><th data-ar="تاريخ الاستحقاق" data-en="Due Date">تاريخ الاستحقاق</th><th data-ar="المبلغ" data-en="Amount">المبلغ</th><th data-ar="الحالة" data-en="Status">الحالة</th></tr></thead><tbody id="dueRows"></tbody></table></div></div></div>
+    </section>
   </main>
-
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDsd4xqv6WxoUT-wayapxhQ06HWiXENnJM",
-      authDomain: "lis-student-system.firebaseapp.com",
-      projectId: "lis-student-system",
-      storageBucket: "lis-student-system.firebasestorage.app",
-      messagingSenderId: "52821419082",
-      appId: "1:52821419082:web:3a5bce423c23553c01b2b3",
-      measurementId: "G-FHNQ48PM83"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-  </script>
-  <script src="app.js"></script>
-</body>
-</html>
+</div>
+<script src="app.js"></script>
+</body></html>
